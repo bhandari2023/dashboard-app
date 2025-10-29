@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | VDS Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-orange-500 to-yellow-400 min-h-screen flex flex-col font-sans">
+
+    <!-- NAV / SIDEBAR -->
+    <div class="flex flex-1">
+        <aside class="bg-gray-900 text-white w-56 flex-shrink-0 flex flex-col">
+            <div class="text-center text-lg font-bold py-4 border-b border-gray-700">VDS SOLUTIONS</div>
+            <nav class="flex-1 flex flex-col justify-between">
+                <ul class="mt-4 space-y-2 px-3">
+                    <li><button class="w-full text-left py-2 px-3 rounded hover:bg-orange-600">START</button></li>
+                    <li><button class="w-full text-left py-2 px-3 rounded hover:bg-orange-600">SEARCH & EDIT</button>
+                    </li>
+                    <li><button class="w-full text-left py-2 px-3 rounded hover:bg-orange-600">EDIT</button></li>
+                    <li><button class="w-full text-left py-2 px-3 rounded hover:bg-orange-600">OUTPUT</button></li>
+                    <li><button class="w-full text-left py-2 px-3 rounded hover:bg-orange-600">CLOSE</button></li>
+                </ul>
+                <div class="px-3 py-4 border-t border-gray-700 text-sm">
+                    <div class="font-semibold mb-1">ADMIN</div>
+                    <div id="clock" class="text-gray-300 text-sm"></div>
+                    <button id="logoutBtn" class="mt-3 w-full bg-red-600 hover:bg-red-700 py-1 rounded">Logout</button>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 p-4 md:p-6 overflow-y-auto">
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">Person Management</h1>
+
+            <!-- FORM SECTION -->
+            <div class="bg-white rounded-xl shadow-lg p-4 mb-6">
+                <form id="personForm" class="grid md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="text-sm font-semibold text-gray-700">Person ID</label>
+                        <input type="text" id="personId" class="w-full border rounded px-2 py-1 mt-1" />
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-700">Name</label>
+                        <input type="text" id="personName" class="w-full border rounded px-2 py-1 mt-1" />
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-700">Designation</label>
+                        <input type="text" id="designation" class="w-full border rounded px-2 py-1 mt-1" />
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-700">Address</label>
+                        <input type="text" id="address" class="w-full border rounded px-2 py-1 mt-1" />
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-700">City</label>
+                        <input type="text" id="city" class="w-full border rounded px-2 py-1 mt-1" />
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-700">Pin Code</label>
+                        <input type="text" id="pincode" class="w-full border rounded px-2 py-1 mt-1" />
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-700">Date of Birth</label>
+                        <input type="date" id="dob" class="w-full border rounded px-2 py-1 mt-1" />
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-700">WhatsApp</label>
+                        <input type="text" id="whatsapp" class="w-full border rounded px-2 py-1 mt-1" />
+                    </div>
+                </form>
+
+                <!-- Buttons -->
+                <div class="mt-4 flex flex-wrap gap-3">
+                    <button class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded"
+                        id="btnUpdate">Update</button>
+                    <button class="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded" id="btnClear">Clear</button>
+                    <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+                        id="btnDelete">Delete</button>
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+                        id="btnOutput">Output</button>
+                </div>
+            </div>
+
+            <!-- SEARCH SECTION -->
+            <div class="bg-white rounded-xl shadow-lg p-4 mb-6">
+                <h2 class="text-lg font-semibold mb-3 text-gray-800">Search Records</h2>
+                <div class="flex flex-col md:flex-row gap-3">
+                    <input type="text" id="searchInput" placeholder="Search by name or ID"
+                        class="flex-1 border rounded px-3 py-2" />
+                    <button id="btnSearch"
+                        class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded">Search</button>
+                </div>
+            </div>
+
+            <!-- TABLE SECTION -->
+            <div class="bg-white rounded-xl shadow-lg overflow-x-auto">
+                <table class="min-w-full text-sm text-left border-collapse">
+                    <thead class="bg-orange-600 text-white">
+                        <tr>
+                            <th class="p-2">ID</th>
+                            <th class="p-2">Name</th>
+                            <th class="p-2">Address</th>
+                            <th class="p-2">City</th>
+                            <th class="p-2">DOB</th>
+                            <th class="p-2">WhatsApp</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y divide-gray-200">
+                        <!-- Data rows populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const scriptURL = "https://script.google.com/macros/s/AKfycbzKbS3dsWCxLh4Kl3r3Kg5nT9VdyIgBR9AjV_-lysbPPY5iSUSBI7EmPetydvvhBDzW/exec"; // same as before
+        let allData = []; // store fetched rows here
+
+        // Show live clock
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById("clock").textContent = now.toLocaleTimeString();
+        }, 1000);
+
+        // Logout
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            sessionStorage.clear();
+            window.location.href = "index.html";
+        });
+
+        // Fetch data from Google Sheets
+        async function loadData() {
+            try {
+                const res = await fetch(`${scriptURL}?action=getData`);
+                const data = await res.json();
+                allData = data; // save for later filtering
+                displayTable(data);
+            } catch (err) {
+                console.error("Error loading data:", err);
+            }
+        }
+
+        // Display rows in table
+        function displayTable(rows) {
+            const tbody = document.getElementById("tableBody");
+            tbody.innerHTML = "";
+
+            if (!rows || rows.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-3 text-center text-gray-500">No records found</td></tr>`;
+                return;
+            }
+
+            rows.forEach(row => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+        <td class="p-2 border">${row.id || ""}</td>
+        <td class="p-2 border">${row.name || ""}</td>
+        <td class="p-2 border">${row.address || ""}</td>
+        <td class="p-2 border">${row.city || ""}</td>
+        <td class="p-2 border">${row.dob || ""}</td>
+        <td class="p-2 border">${row.whatsapp || ""}</td>
+      `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Search button click
+        document.getElementById("btnSearch").addEventListener("click", () => {
+            const term = document.getElementById("searchInput").value.trim().toLowerCase();
+            if (term === "") {
+                displayTable(allData);
+                return;
+            }
+
+            const filtered = allData.filter(row =>
+                Object.values(row).some(val =>
+                    String(val).toLowerCase().includes(term)
+                )
+            );
+            displayTable(filtered);
+        });
+
+        // Allow pressing Enter to search
+        document.getElementById("searchInput").addEventListener("keydown", e => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                document.getElementById("btnSearch").click();
+            }
+        });
+
+        // Load data when page opens
+        window.addEventListener("load", loadData);
+    </script>
+
+
+</body>
+
+</html>

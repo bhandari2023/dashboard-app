@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | VDS Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-orange-500 to-yellow-400 min-h-screen flex items-center justify-center font-sans">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+        <h1 class="text-3xl font-bold text-center text-orange-600 mb-6">VDS Solutions</h1>
+        <h2 class="text-lg text-gray-700 text-center mb-8">Login to Continue</h2>
+
+        <form id="loginForm" class="space-y-6">
+            <div>
+                <label class="block text-gray-700 font-medium mb-2" for="username">Username</label>
+                <input type="text" id="username"
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    placeholder="Enter your username" required>
+            </div>
+
+            <div>
+                <label class="block text-gray-700 font-medium mb-2" for="password">Password</label>
+                <input type="password" id="password"
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    placeholder="Enter your password" required>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <label class="flex items-center text-gray-600">
+                    <input type="checkbox" id="rememberMe" class="mr-2">
+                    Remember Me
+                </label>
+                <a href="#" class="text-orange-600 hover:underline text-sm">Forgot Password?</a>
+            </div>
+
+            <button type="submit"
+                class="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 rounded-lg transition duration-200">
+                Login
+            </button>
+        </form>
+
+        <p class="text-center text-sm text-gray-500 mt-6">&copy; 2025 VDS Solutions Pvt. Ltd.</p>
+    </div>
+
+    <script>
+        // Replace this with your actual Google Apps Script Web App URL
+        const scriptURL = "https://script.google.com/macros/s/AKfycbzKbS3dsWCxLh4Kl3r3Kg5nT9VdyIgBR9AjV_-lysbPPY5iSUSBI7EmPetydvvhBDzW/exec";
+
+        const loginForm = document.getElementById('loginForm');
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const remember = document.getElementById('rememberMe').checked;
+
+            try {
+                const response = await fetch(`${scriptURL}?action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`);
+
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    if (remember) {
+                        localStorage.setItem('user', username);
+                    }
+                    sessionStorage.setItem('user', username);
+                    window.location.href = "dashboard.html";
+                } else {
+                    alert("Invalid credentials. Please try again.");
+                }
+            } catch (error) {
+                alert("Error connecting to server.");
+                console.error(error);
+            }
+        });
+
+        // Auto-fill if "Remember Me" was checked
+        window.addEventListener('load', () => {
+            const savedUser = localStorage.getItem('user');
+            if (savedUser) document.getElementById('username').value = savedUser;
+        });
+    </script>
+</body>
+
+</html>
