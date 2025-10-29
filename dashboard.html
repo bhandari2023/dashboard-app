@@ -92,6 +92,8 @@
                         class="flex-1 border rounded px-3 py-2" />
                     <button id="btnSearch"
                         class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded">Search</button>
+                    <button id="btnDownload"
+                        class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">Download Excel</button>
                 </div>
             </div>
 
@@ -100,21 +102,37 @@
                 <table class="min-w-full text-sm text-left border-collapse">
                     <thead class="bg-orange-600 text-white">
                         <tr>
-                            <th class="p-2">ID</th>
-                            <th class="p-2">Name</th>
-                            <th class="p-2">Address</th>
-                            <th class="p-2">City</th>
+                            <th class="p-2">PersonID</th>
+                            <th class="p-2">PERSONNAME</th>
+                            <th class="p-2">DESIGNATION</th>
+                            <th class="p-2">ADDRESS</th>
+                            <th class="p-2">CITY</th>
+                            <th class="p-2">PINCODE</th>
+                            <th class="p-2">Booth</th>
                             <th class="p-2">DOB</th>
-                            <th class="p-2">WhatsApp</th>
+                            <th class="p-2">INCAT</th>
+                            <th class="p-2">CONTACT</th>
+                            <th class="p-2">WHAP</th>
+                            <th class="p-2">EMAIL</th>
+                            <th class="p-2">REFPER</th>
+                            <th class="p-2">CGROUP</th>
+                            <th class="p-2">HNAME</th>
+                            <th class="p-2">HDESIG</th>
+                            <th class="p-2">HADD</th>
+                            <th class="p-2">HINCAT</th>
                         </tr>
                     </thead>
-                    <tbody id="tableBody" class="divide-y divide-gray-200">
-                        <!-- Data rows populated via JS -->
-                    </tbody>
+                    <tbody id="tableBody" class="divide-y divide-gray-200"></tbody>
                 </table>
             </div>
+
         </main>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+
 
     <script>
         const scriptURL = "https://script.google.com/macros/s/AKfycbzKbS3dsWCxLh4Kl3r3Kg5nT9VdyIgBR9AjV_-lysbPPY5iSUSBI7EmPetydvvhBDzW/exec"; // same as before
@@ -150,20 +168,32 @@
             tbody.innerHTML = "";
 
             if (!rows || rows.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-3 text-center text-gray-500">No records found</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="18" class="p-3 text-center text-gray-500">No records found</td></tr>`;
                 return;
             }
 
             rows.forEach(row => {
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
-        <td class="p-2 border">${row.id || ""}</td>
-        <td class="p-2 border">${row.name || ""}</td>
-        <td class="p-2 border">${row.address || ""}</td>
-        <td class="p-2 border">${row.city || ""}</td>
-        <td class="p-2 border">${row.dob || ""}</td>
-        <td class="p-2 border">${row.whatsapp || ""}</td>
-      `;
+      <td class="p-2 border">${row.PersonID || ""}</td>
+      <td class="p-2 border">${row.PERSONNAME || ""}</td>
+      <td class="p-2 border">${row.DESIGNATION || ""}</td>
+      <td class="p-2 border">${row.ADDRESS || ""}</td>
+      <td class="p-2 border">${row.CITY || ""}</td>
+      <td class="p-2 border">${row.PINCODE || ""}</td>
+      <td class="p-2 border">${row.Booth || ""}</td>
+      <td class="p-2 border">${row.DOB || ""}</td>
+      <td class="p-2 border">${row.INCAT || ""}</td>
+      <td class="p-2 border">${row.CONTACT || ""}</td>
+      <td class="p-2 border">${row.WHAP || ""}</td>
+      <td class="p-2 border">${row.EMAIL || ""}</td>
+      <td class="p-2 border">${row.REFPER || ""}</td>
+      <td class="p-2 border">${row.CGROUP || ""}</td>
+      <td class="p-2 border">${row.HNAME || ""}</td>
+      <td class="p-2 border">${row.HDESIG || ""}</td>
+      <td class="p-2 border">${row.HADD || ""}</td>
+      <td class="p-2 border">${row.HINCAT || ""}</td>
+    `;
                 tbody.appendChild(tr);
             });
         }
@@ -194,10 +224,42 @@
 
         // Load data when page opens
         window.addEventListener("load", loadData);
+
+
+        // Download PDF of current table data
+        // Download Excel (XLSX) of visible table data
+        document.getElementById("btnDownload").addEventListener("click", () => {
+            if (!allData || allData.length === 0) {
+                alert("No data available to download!");
+                return;
+            }
+
+            // Get the filtered or full table data from the DOM
+            const rows = [];
+            const headers = [];
+            document.querySelectorAll("thead th").forEach(th => headers.push(th.textContent.trim()));
+
+            rows.push(headers);
+
+            document.querySelectorAll("#tableBody tr").forEach(tr => {
+                const rowData = [];
+                tr.querySelectorAll("td").forEach(td => rowData.push(td.textContent.trim()));
+                rows.push(rowData);
+            });
+
+            // Create a worksheet and workbook
+            const worksheet = XLSX.utils.aoa_to_sheet(rows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "FilteredData");
+
+            // Download file
+            XLSX.writeFile(workbook, `Person_Data_${new Date().toISOString().split('T')[0]}.xlsx`);
+        });
+
+
     </script>
 
 
 </body>
-
 
 </html>
