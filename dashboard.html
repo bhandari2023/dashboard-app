@@ -10,20 +10,17 @@
 
 <body class="bg-gradient-to-br from-orange-500 to-yellow-400 min-h-screen flex flex-col font-sans">
 
+    <!-- NAV / SIDEBAR -->
     <div class="flex flex-1">
 
+        <!-- MAIN CONTENT -->
         <main class="flex-1 p-4 md:p-6 overflow-y-auto">
             <h1 class="text-2xl font-bold text-gray-800 mb-4">Data Management</h1>
-
             <div class="flex justify-between items-center mb-4">
                 <div id="clock" class="text-gray-700 font-semibold"></div>
-                <div class="flex gap-2">
-                    <button id="btnAddRecord" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">+ Add
-                        Record</button>
-                    <button id="logoutBtn"
-                        class="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded">Logout</button>
-                </div>
+                <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded">Logout</button>
             </div>
+
 
             <!-- SEARCH SECTION -->
             <div class="bg-white rounded-xl shadow-lg p-4 mb-6">
@@ -48,6 +45,51 @@
                         class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">Download Excel</button>
                 </div>
             </div>
+            <!-- DATA ENTRY SECTION -->
+            <div class="bg-white rounded-xl shadow-lg p-4 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800">Add New Record</h2>
+                    <button id="btnOpenForm" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                        + Add Record
+                    </button>
+                </div>
+            </div>
+
+            <!-- MODAL FORM -->
+            <div id="dataFormModal"
+                class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
+                <div class="bg-white rounded-xl w-full max-w-3xl p-6 shadow-lg overflow-y-auto max-h-[90vh]">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">New Record Entry</h3>
+                    <form id="dataEntryForm" class="grid grid-cols-2 gap-4">
+
+                        <input name="PERSONNAME" placeholder="Person Name" class="border rounded px-3 py-2" required />
+                        <input name="DESIGNATION" placeholder="Designation" class="border rounded px-3 py-2" />
+                        <input name="ADDRESS" placeholder="Address" class="border rounded px-3 py-2" />
+                        <input name="CITY" placeholder="City" class="border rounded px-3 py-2" />
+                        <input name="PINCODE" placeholder="Pincode" class="border rounded px-3 py-2" />
+                        <input name="Booth" placeholder="Booth" class="border rounded px-3 py-2" />
+                        <input name="DOB" type="date" class="border rounded px-3 py-2" />
+                        <input name="INCAT" placeholder="INCAT" class="border rounded px-3 py-2" />
+                        <input name="CONTACT" placeholder="Contact" class="border rounded px-3 py-2" />
+                        <input name="WHAP" placeholder="WhatsApp" class="border rounded px-3 py-2" />
+                        <input name="EMAIL" type="email" placeholder="Email" class="border rounded px-3 py-2" />
+                        <input name="REFPER" placeholder="Ref Person" class="border rounded px-3 py-2" />
+                        <input name="CGROUP" placeholder="CGroup" class="border rounded px-3 py-2" />
+                        <input name="HNAME" placeholder="Head Name" class="border rounded px-3 py-2" />
+                        <input name="HDESIG" placeholder="Head Designation" class="border rounded px-3 py-2" />
+                        <input name="HADD" placeholder="Head Address" class="border rounded px-3 py-2" />
+                        <input name="HINCAT" placeholder="Head INCAT" class="border rounded px-3 py-2" />
+
+                        <div class="col-span-2 flex justify-end mt-4 gap-3">
+                            <button type="button" id="btnCancelForm"
+                                class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+                            <button type="submit"
+                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
 
             <!-- TABLE SECTION -->
             <div class="bg-white rounded-xl shadow-lg overflow-auto max-h-[500px]">
@@ -77,51 +119,24 @@
                     <tbody id="tableBody" class="divide-y divide-gray-200"></tbody>
                 </table>
             </div>
+
+
         </main>
     </div>
-
-    <!-- MODAL FORM -->
-    <div id="recordModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50">
-        <div class="bg-white rounded-lg shadow-lg w-full max-w-3xl p-6 overflow-y-auto max-h-[90vh]">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">Add New Record</h2>
-            <form id="entryForm" class="grid grid-cols-2 gap-4 text-sm">
-                <input type="text" id="PersonID" placeholder="PersonID" class="border rounded p-2" required>
-                <input type="text" id="PERSONNAME" placeholder="PERSONNAME" class="border rounded p-2" required>
-                <input type="text" id="DESIGNATION" placeholder="DESIGNATION" class="border rounded p-2">
-                <input type="text" id="ADDRESS" placeholder="ADDRESS" class="border rounded p-2">
-                <input type="text" id="CITY" placeholder="CITY" class="border rounded p-2">
-                <input type="text" id="PINCODE" placeholder="PINCODE" class="border rounded p-2">
-                <input type="text" id="Booth" placeholder="Booth" class="border rounded p-2">
-                <input type="text" id="DOB" placeholder="DOB" class="border rounded p-2">
-                <input type="text" id="INCAT" placeholder="INCAT" class="border rounded p-2">
-                <input type="text" id="CONTACT" placeholder="CONTACT" class="border rounded p-2">
-                <input type="text" id="WHAP" placeholder="WHAP" class="border rounded p-2">
-                <input type="text" id="EMAIL" placeholder="EMAIL" class="border rounded p-2">
-                <input type="text" id="REFPER" placeholder="REFPER" class="border rounded p-2">
-                <input type="text" id="CGROUP" placeholder="CGROUP" class="border rounded p-2">
-                <input type="text" id="HNAME" placeholder="HNAME" class="border rounded p-2">
-                <input type="text" id="HDESIG" placeholder="HDESIG" class="border rounded p-2">
-                <input type="text" id="HADD" placeholder="HADD" class="border rounded p-2">
-                <input type="text" id="HINCAT" placeholder="HINCAT" class="border rounded p-2">
-                <div class="col-span-2 flex justify-end mt-4">
-                    <button type="button" id="closeModal"
-                        class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
-                    <button type="submit"
-                        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-    <script>
-        const scriptURL = "https://script.google.com/macros/s/AKfycby2ZM7YxT2yzxXUmetqHaz8a9r0FFuSvRBBhe_c1B82g3775N83rGvDlm-n3b0dahHH/exec";
-        let allData = [];
 
-        // Clock
+
+    <script>
+        const scriptURL = "https://script.google.com/macros/s/AKfycbyk0oXl70NPdcCnWuuNlqUQAKTE-8Z2TFKUBirXiYj34Epr9Izt717KKdMHRrfArc4/exec"; // same as before
+        let allData = []; // store fetched rows here
+
+        // Show live clock
         setInterval(() => {
-            document.getElementById("clock").textContent = new Date().toLocaleTimeString();
+            const now = new Date();
+            document.getElementById("clock").textContent = now.toLocaleTimeString();
         }, 1000);
 
         // Logout
@@ -130,94 +145,167 @@
             window.location.href = "index.html";
         });
 
-        // Modal open/close
-        const modal = document.getElementById("recordModal");
-        document.getElementById("btnAddRecord").addEventListener("click", () => modal.classList.remove("hidden"));
-        document.getElementById("closeModal").addEventListener("click", () => modal.classList.add("hidden"));
-
-        // Load data
+        // Fetch data from Google Sheets
         async function loadData() {
-            const res = await fetch(`${scriptURL}?action=getData`);
-            const data = await res.json();
-            allData = data;
-            displayTable(data);
+            try {
+                const res = await fetch(`${scriptURL}?action=getData`);
+                const data = await res.json();
+                allData = data; // save for later filtering
+                displayTable(data);
+            } catch (err) {
+                console.error("Error loading data:", err);
+            }
         }
 
+        // Display rows in table
         function displayTable(rows) {
             const tbody = document.getElementById("tableBody");
             tbody.innerHTML = "";
+
             if (!rows || rows.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="18" class="p-3 text-center text-gray-500">No records found</td></tr>`;
                 return;
             }
+
             rows.forEach(row => {
                 const tr = document.createElement("tr");
-                tr.innerHTML = Object.values(row).map(val => `<td class='p-2 border'>${val || ""}</td>`).join("");
+                tr.innerHTML = `
+      <td class="p-2 border">${row.PersonID || ""}</td>
+      <td class="p-2 border">${row.PERSONNAME || ""}</td>
+      <td class="p-2 border">${row.DESIGNATION || ""}</td>
+      <td class="p-2 border">${row.ADDRESS || ""}</td>
+      <td class="p-2 border">${row.CITY || ""}</td>
+      <td class="p-2 border">${row.PINCODE || ""}</td>
+      <td class="p-2 border">${row.Booth || ""}</td>
+      <td class="p-2 border">${row.DOB || ""}</td>
+      <td class="p-2 border">${row.INCAT || ""}</td>
+      <td class="p-2 border">${row.CONTACT || ""}</td>
+      <td class="p-2 border">${row.WHAP || ""}</td>
+      <td class="p-2 border">${row.EMAIL || ""}</td>
+      <td class="p-2 border">${row.REFPER || ""}</td>
+      <td class="p-2 border">${row.CGROUP || ""}</td>
+      <td class="p-2 border">${row.HNAME || ""}</td>
+      <td class="p-2 border">${row.HDESIG || ""}</td>
+      <td class="p-2 border">${row.HADD || ""}</td>
+      <td class="p-2 border">${row.HINCAT || ""}</td>
+    `;
                 tbody.appendChild(tr);
             });
         }
 
-        // Search filter
+        // Search button click
+        // SEARCH BUTTON: filter data based on multiple fields
         document.getElementById("btnSearch").addEventListener("click", () => {
-            const id = searchValue("searchId"), name = searchValue("searchName"),
-                addr = searchValue("searchAddress"), city = searchValue("searchCity"),
-                phone = searchValue("searchPhone");
+            const idTerm = document.getElementById("searchId").value.trim().toLowerCase();
+            const nameTerm = document.getElementById("searchName").value.trim().toLowerCase();
+            const addressTerm = document.getElementById("searchAddress").value.trim().toLowerCase();
+            const cityTerm = document.getElementById("searchCity").value.trim().toLowerCase();
+            const phoneTerm = document.getElementById("searchPhone").value.trim().toLowerCase();
 
-            const filtered = allData.filter(r =>
-                match(r.PersonID, id) && match(r.PERSONNAME, name) &&
-                match(r.ADDRESS, addr) && match(r.CITY, city) &&
-                (match(r.CONTACT, phone) || match(r.WHAP, phone))
-            );
+            // Filter the dataset
+            const filtered = allData.filter(row => {
+                const matchesId = idTerm === "" || String(row.PersonID).toLowerCase().includes(idTerm);
+                const matchesName = nameTerm === "" || String(row.PERSONNAME).toLowerCase().includes(nameTerm);
+                const matchesAddress = addressTerm === "" || String(row.ADDRESS).toLowerCase().includes(addressTerm);
+                const matchesCity = cityTerm === "" || String(row.CITY).toLowerCase().includes(cityTerm);
+                const matchesPhone = phoneTerm === "" ||
+                    String(row.CONTACT).toLowerCase().includes(phoneTerm) ||
+                    String(row.WHAP).toLowerCase().includes(phoneTerm);
+
+                return matchesId && matchesName && matchesAddress && matchesCity && matchesPhone;
+            });
+
             displayTable(filtered);
         });
 
-        function searchValue(id) { return document.getElementById(id).value.trim().toLowerCase(); }
-        function match(val, term) { return term === "" || String(val).toLowerCase().includes(term); }
-
+        // CLEAR FILTERS
         document.getElementById("btnClearSearch").addEventListener("click", () => {
-            document.querySelectorAll("#searchId,#searchName,#searchAddress,#searchCity,#searchPhone").forEach(i => i.value = "");
+            document.getElementById("searchId").value = "";
+            document.getElementById("searchName").value = "";
+            document.getElementById("searchAddress").value = "";
+            document.getElementById("searchCity").value = "";
+            document.getElementById("searchPhone").value = "";
             displayTable(allData);
         });
 
-        // Download XLSX
+        // Load data when page opens
+        window.addEventListener("load", loadData);
+
+
+        // Download PDF of current table data
+        // Download Excel (XLSX) of visible table data
         document.getElementById("btnDownloadXLSX").addEventListener("click", () => {
-            const headers = [...document.querySelectorAll("thead th")].map(th => th.textContent.trim());
-            const rows = [headers];
+            if (!allData || allData.length === 0) {
+                alert("No data available to download!");
+                return;
+            }
+
+            // Get the filtered or full table data from the DOM
+            const rows = [];
+            const headers = [];
+            document.querySelectorAll("thead th").forEach(th => headers.push(th.textContent.trim()));
+
+            rows.push(headers);
+
             document.querySelectorAll("#tableBody tr").forEach(tr => {
-                rows.push([...tr.querySelectorAll("td")].map(td => td.textContent.trim()));
+                const rowData = [];
+                tr.querySelectorAll("td").forEach(td => rowData.push(td.textContent.trim()));
+                rows.push(rowData);
             });
+
+            // Create a worksheet and workbook
             const worksheet = XLSX.utils.aoa_to_sheet(rows);
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Data");
+            XLSX.utils.book_append_sheet(workbook, worksheet, "FilteredData");
+
+            // Download file
             XLSX.writeFile(workbook, `Person_Data_${new Date().toISOString().split('T')[0]}.xlsx`);
         });
 
-        // Handle form submission
-        document.getElementById("entryForm").addEventListener("submit", async (e) => {
+
+        // --- FORM MODAL HANDLING ---
+        const modal = document.getElementById("dataFormModal");
+        const openBtn = document.getElementById("btnOpenForm");
+        const cancelBtn = document.getElementById("btnCancelForm");
+        const form = document.getElementById("dataEntryForm");
+
+        openBtn.addEventListener("click", () => modal.classList.remove("hidden"));
+        cancelBtn.addEventListener("click", () => modal.classList.add("hidden"));
+
+        // --- SUBMIT FORM TO GOOGLE SHEET ---
+        // --- SUBMIT FORM TO GOOGLE SHEET ---
+        form.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const record = {};
-            document.querySelectorAll("#entryForm input").forEach(input => record[input.id] = input.value.trim());
 
-            const response = await fetch(scriptURL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ action: "addRecord", record })
-            });
+            const formData = new FormData(form);
+            formData.append("action", "addData"); // ✅ Tell backend what to do
 
-            const result = await response.json();
-            if (result.status === "success") {
-                alert("Record added successfully!");
-                modal.classList.add("hidden");
-                e.target.reset();
-                loadData(); // refresh table
-            } else {
-                alert("Failed to add record. Check Google Script logs.");
+            try {
+                const res = await fetch(scriptURL, {
+                    method: "POST",
+                    body: formData // ✅ No custom headers, no CORS preflight
+                });
+
+                const result = await res.json();
+                if (result.status === "success") {
+                    alert("✅ Record added successfully!");
+                    modal.classList.add("hidden");
+                    form.reset();
+                    loadData(); // refresh table
+                } else {
+                    alert("❌ Failed to add record. Please try again.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Error submitting data.");
             }
         });
 
-        window.addEventListener("load", loadData);
+
+
     </script>
+
+
 </body>
 
 </html>
-
