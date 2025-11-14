@@ -6,6 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard | XYZ Solutions</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+
+            body {
+                background: white !important;
+            }
+
+            /* Hide everything except the table */
+            body * {
+                visibility: hidden;
+            }
+
+            #printArea,
+            #printArea * {
+                visibility: visible !important;
+            }
+
+            #printArea {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+            }
+
+            /* Remove scrolling borders */
+            #printArea table {
+                width: 100% !important;
+                border: 1px solid #000;
+            }
+
+            /* Cleaner print look */
+            th,
+            td {
+                border: 1px solid #000 !important;
+                padding: 4px !important;
+            }
+        }
+    </style>
+
 </head>
 
 <body class="bg-gradient-to-br from-orange-500 to-yellow-400 min-h-screen flex flex-col font-sans">
@@ -23,37 +62,59 @@
 
 
             <!-- SEARCH SECTION -->
-            <div class="bg-white rounded-xl shadow-lg p-4 mb-6">
-                <h2 class="text-lg font-semibold mb-3 text-gray-800">Search Records</h2>
+            <div class="bg-white rounded-lg shadow p-3 mb-4">
+                <h2 class="text-sm font-semibold mb-2 text-gray-700">Search Records</h2>
 
-                <div class="grid md:grid-cols-5 sm:grid-cols-2 gap-3">
-                    <input type="text" id="searchId" placeholder="Search by ID" class="border rounded px-3 py-2" />
-                    <input type="text" id="searchName" placeholder="Search by Name" class="border rounded px-3 py-2" />
-                    <input type="text" id="searchAddress" placeholder="Search by Address"
-                        class="border rounded px-3 py-2" />
-                    <input type="text" id="searchCity" placeholder="Search by City" class="border rounded px-3 py-2" />
-                    <input type="text" id="searchPhone" placeholder="Search by Phone/WhatsApp"
-                        class="border rounded px-3 py-2" />
+                <div class="grid md:grid-cols-5 sm:grid-cols-2 gap-2">
+                    <input type="text" id="searchId" placeholder="ID" class="border rounded px-2 py-1 text-xs" />
+
+                    <input type="text" id="searchName" placeholder="Name" class="border rounded px-2 py-1 text-xs" />
+
+                    <input type="text" id="searchAddress" placeholder="Address"
+                        class="border rounded px-2 py-1 text-xs" />
+
+                    <input type="text" id="searchCity" placeholder="City" class="border rounded px-2 py-1 text-xs" />
+
+                    <input type="text" id="searchPhone" placeholder="Phone/WhatsApp"
+                        class="border rounded px-2 py-1 text-xs" />
                 </div>
 
-                <div class="mt-4 flex flex-wrap gap-3">
-                    <button id="btnSearch"
-                        class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded">Search</button>
-                    <button id="btnClearSearch"
-                        class="bg-gray-300 hover:bg-gray-400 text-black px-6 py-2 rounded">Clear</button>
-                    <button id="btnDownloadXLSX"
-                        class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">Download Excel</button>
+                <div class="mt-3 flex flex-wrap gap-2 text-xs">
+                    <button id="btnSearch" class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-1.5 rounded">
+                        Search
+                    </button>
+
+                    <button id="btnClearSearch" class="bg-gray-200 hover:bg-gray-300 text-black px-4 py-1.5 rounded">
+                        Clear
+                    </button>
+
+                    <button id="btnDownloadXLSX" class="bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded">
+                        Excel
+                    </button>
+                    <button id="btnDownloadPDF"
+                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded text-xs">
+                        PDF
+                    </button>
+                    <button id="btnPrint"
+                        class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1.5 rounded text-xs">
+                        Print
+                    </button>
+
+                    <button id="btnOpenForm" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded">
+                        + Add
+                    </button>
                 </div>
             </div>
+
             <!-- DATA ENTRY SECTION -->
-            <div class="bg-white rounded-xl shadow-lg p-4 mb-6">
+            <!-- <div class="bg-white rounded-xl shadow-lg p-4 mb-6">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-semibold text-gray-800">Add New Record</h2>
                     <button id="btnOpenForm" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
                         + Add Record
                     </button>
                 </div>
-            </div>
+            </div> -->
 
             <!-- MODAL FORM -->
             <div id="dataFormModal"
@@ -91,34 +152,49 @@
             </div>
 
 
+            <div
+                class="bg-white border rounded p-2 mb-1 flex items-center gap-3 overflow-x-auto whitespace-nowrap text-[11px]">
+                <span class="font-semibold text-gray-600">Show/Hide:</span>
+
+                <div id="columnToggleContainer" class="flex gap-3 items-center">
+                    <!-- Checkboxes in one line -->
+                </div>
+            </div>
+
+
             <!-- TABLE SECTION -->
-            <div class="bg-white rounded-xl shadow-lg overflow-auto max-h-[500px]">
-                <table class="min-w-[1200px] text-sm text-left border-collapse">
-                    <thead class="bg-orange-600 text-white sticky top-0">
+            <div id="printArea" class="bg-white rounded-lg shadow overflow-auto max-h-[450px] border border-gray-200">
+
+                <table class="min-w-[1100px] text-xs text-left border-collapse">
+                    <thead class="bg-orange-600 text-white sticky top-0 text-[11px]">
                         <tr>
-                            <th class="p-2">PersonID</th>
-                            <th class="p-2">PERSONNAME</th>
-                            <th class="p-2">DESIGNATION</th>
-                            <th class="p-2">ADDRESS</th>
-                            <th class="p-2">CITY</th>
-                            <th class="p-2">PINCODE</th>
-                            <th class="p-2">Booth</th>
-                            <th class="p-2">DOB</th>
-                            <th class="p-2">INCAT</th>
-                            <th class="p-2">CONTACT</th>
-                            <th class="p-2">WHAP</th>
-                            <th class="p-2">EMAIL</th>
-                            <th class="p-2">REFPER</th>
-                            <th class="p-2">CGROUP</th>
-                            <th class="p-2">HNAME</th>
-                            <th class="p-2">HDESIG</th>
-                            <th class="p-2">HADD</th>
-                            <th class="p-2">HINCAT</th>
+                            <th class="px-2 py-1">PersonID</th>
+                            <th class="px-2 py-1">PERSONNAME</th>
+                            <th class="px-2 py-1">DESIGNATION</th>
+                            <th class="px-2 py-1">ADDRESS</th>
+                            <th class="px-2 py-1">CITY</th>
+                            <th class="px-2 py-1">PINCODE</th>
+                            <th class="px-2 py-1">Booth</th>
+                            <th class="px-2 py-1">DOB</th>
+                            <th class="px-2 py-1">INCAT</th>
+                            <th class="px-2 py-1">CONTACT</th>
+                            <th class="px-2 py-1">WHAP</th>
+                            <th class="px-2 py-1">EMAIL</th>
+                            <th class="px-2 py-1">REFPER</th>
+                            <th class="px-2 py-1">CGROUP</th>
+                            <th class="px-2 py-1">HNAME</th>
+                            <th class="px-2 py-1">HDESIG</th>
+                            <th class="px-2 py-1">HADD</th>
+                            <th class="px-2 py-1">HINCAT</th>
                         </tr>
                     </thead>
-                    <tbody id="tableBody" class="divide-y divide-gray-200"></tbody>
+
+                    <tbody id="tableBody" class="divide-y divide-gray-100">
+                        <!-- Rows injected by JS -->
+                    </tbody>
                 </table>
             </div>
+
 
 
         </main>
@@ -131,6 +207,11 @@
 
     <script>
         const scriptURL = "https://script.google.com/macros/s/AKfycbyk0oXl70NPdcCnWuuNlqUQAKTE-8Z2TFKUBirXiYj34Epr9Izt717KKdMHRrfArc4/exec"; // same as before
+        const tableColumns = [
+            "PersonID", "PERSONNAME", "DESIGNATION", "ADDRESS", "CITY", "PINCODE",
+            "Booth", "DOB", "INCAT", "CONTACT", "WHAP", "EMAIL",
+            "REFPER", "CGROUP", "HNAME", "HDESIG", "HADD", "HINCAT"
+        ];
         let allData = []; // store fetched rows here
 
         // Show live clock
@@ -155,6 +236,49 @@
             } catch (err) {
                 console.error("Error loading data:", err);
             }
+        }
+
+        function generateColumnToggles() {
+            const container = document.getElementById("columnToggleContainer");
+            container.innerHTML = "";
+
+            tableColumns.forEach((col, index) => {
+                const id = "col_toggle_" + index;
+
+                container.innerHTML += `
+            <label class="flex items-center gap-2">
+                <input type="checkbox" id="${id}" data-col="${index}" checked class="w-4 h-4">
+                <span>${col}</span>
+            </label>
+        `;
+            });
+
+            // Add event listener to each checkbox
+            document.querySelectorAll("#columnToggleContainer input").forEach(checkbox => {
+                checkbox.addEventListener("change", () => {
+                    toggleColumnVisibility(checkbox.dataset.col, checkbox.checked);
+                });
+            });
+        }
+
+        window.addEventListener("load", () => {
+            loadData();
+            generateColumnToggles();
+        });
+
+
+        function toggleColumnVisibility(colIndex, isVisible) {
+            const table = document.querySelector("table");
+
+            // Toggle header cell
+            const th = table.querySelectorAll("thead th")[colIndex];
+            th.style.display = isVisible ? "" : "none";
+
+            // Toggle each row cell
+            table.querySelectorAll("tbody tr").forEach(row => {
+                const td = row.querySelectorAll("td")[colIndex];
+                if (td) td.style.display = isVisible ? "" : "none";
+            });
         }
 
         // Display rows in table
@@ -235,32 +359,62 @@
         // Download PDF of current table data
         // Download Excel (XLSX) of visible table data
         document.getElementById("btnDownloadXLSX").addEventListener("click", () => {
-            if (!allData || allData.length === 0) {
-                alert("No data available to download!");
+
+            const visibleCols = [];
+            document.querySelectorAll("#columnToggleContainer input").forEach((chk, index) => {
+                if (chk.checked) visibleCols.push(index);
+            });
+
+            if (visibleCols.length === 0) {
+                alert("Please select at least one column to download.");
                 return;
             }
 
-            // Get the filtered or full table data from the DOM
-            const rows = [];
-            const headers = [];
-            document.querySelectorAll("thead th").forEach(th => headers.push(th.textContent.trim()));
+            let rows = [];
+            let headers = [];
+
+            // Get only visible headers
+            document.querySelectorAll("thead th").forEach((th, index) => {
+                if (visibleCols.includes(index)) {
+                    headers.push(th.textContent.trim());
+                }
+            });
 
             rows.push(headers);
 
+            // Get visible row data
             document.querySelectorAll("#tableBody tr").forEach(tr => {
-                const rowData = [];
-                tr.querySelectorAll("td").forEach(td => rowData.push(td.textContent.trim()));
+                let rowData = [];
+
+                tr.querySelectorAll("td").forEach((td, index) => {
+                    if (visibleCols.includes(index)) {
+                        rowData.push(td.textContent.trim());
+                    }
+                });
+
                 rows.push(rowData);
             });
 
-            // Create a worksheet and workbook
+            // Download Excel
             const worksheet = XLSX.utils.aoa_to_sheet(rows);
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "FilteredData");
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Filtered");
 
-            // Download file
-            XLSX.writeFile(workbook, `Person_Data_${new Date().toISOString().split('T')[0]}.xlsx`);
+            XLSX.writeFile(workbook, `Filtered_Data_${new Date().toISOString().split('T')[0]}.xlsx`);
         });
+
+        document.getElementById("btnPrint").addEventListener("click", () => {
+
+            // Ensure hidden columns are also hidden in print
+            document.querySelectorAll("#columnToggleContainer input").forEach((chk, index) => {
+                toggleColumnVisibility(index, chk.checked);
+            });
+
+            window.print();
+        });
+
+
+
 
 
         // --- FORM MODAL HANDLING ---
@@ -301,6 +455,75 @@
             }
         });
 
+        document.getElementById("btnDownloadPDF").addEventListener("click", () => {
+            const { jsPDF } = window.jspdf;
+
+            const doc = new jsPDF({
+                orientation: "landscape",
+                unit: "pt",
+                format: "A4"
+            });
+
+            const visibleCols = [];
+            document.querySelectorAll("#columnToggleContainer input").forEach((chk, index) => {
+                if (chk.checked) visibleCols.push(index);
+            });
+
+            let headers = [];
+            let body = [];
+
+            // Get visible headers
+            document.querySelectorAll("thead th").forEach((th, index) => {
+                if (visibleCols.includes(index)) {
+                    headers.push(th.textContent.trim());
+                }
+            });
+
+            // Get visible row data
+            document.querySelectorAll("#tableBody tr").forEach(tr => {
+                const row = [];
+                tr.querySelectorAll("td").forEach((td, index) => {
+                    if (visibleCols.includes(index)) {
+                        row.push(td.textContent.trim());
+                    }
+                });
+                body.push(row);
+            });
+
+            doc.autoTable({
+                head: [headers],
+                body: body,
+
+                // 🔥 Compact table: fits all columns
+                styles: {
+                    fontSize: 6,
+                    cellPadding: 2,
+                    overflow: "linebreak",
+                },
+
+                headStyles: {
+                    fillColor: [255, 102, 0], // matching your orange theme
+                    textColor: 255,
+                    fontSize: 7,
+                },
+
+                columnStyles: {
+                    0: { cellWidth: "auto" }
+                },
+
+                tableWidth: "auto",
+                pageBreak: "auto",
+
+                // 🔥 This SHRINKS the table to fit page width
+                didDrawPage: function (data) {
+                    doc.setFontSize(8);
+                    doc.text("Person Data Export", 40, 30);
+                    doc.text("Generated: " + new Date().toLocaleDateString(), 700, 30);
+                }
+            });
+
+            doc.save("Filtered_Data.pdf");
+        });
 
 
     </script>
